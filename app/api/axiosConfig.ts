@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 import { useAuthStore } from "@/store/use-auth";
 
 const BASE_URL = "https://ai-pulse-backend.onrender.com/api/v1";
@@ -13,11 +13,15 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    console.log(originalRequest, "original request")
-    if (error.response && error.response.status === 401 && !originalRequest._retry) {
+    console.log(originalRequest, "original request");
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
       const authStore = useAuthStore.getState();
-      
+
       // Check if the user is logged in before attempting to refresh the token
       if (authStore.isLoggedIn()) {
         try {
